@@ -18,7 +18,7 @@ variable "resource_group" {
 
 variable "location" {
     type    = string
-    default = "East US"
+    default = "Southeast Asia"
 }
 
 source "azure-arm" "ubuntu_base" {
