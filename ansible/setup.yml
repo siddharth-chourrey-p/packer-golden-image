@@ -1,0 +1,43 @@
+---
+- name: Hardening and provisioning golden image
+  hosts: all
+  beacome: true
+  tasks:
+    - name: update apt and upgrade system packages
+      apt:
+        update_cache: yes #
+        upgrade: dist
+    
+    - name: Install essential baseline utilities
+      apt:
+        name:
+         - curl
+         - wget
+         - git
+         - unzip
+         - htop
+         - ufw
+         - fail2ban
+        state: present
+    
+    - name: Enable and configure UFW Firewall
+      ufw:
+        state: enabled
+        policy: deny
+        direction: incoming
+      
+    - name: Allow ssh traffic
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+    
+    - name: CleanUp apt cache to keep image lightweight
+      apt:
+        autoremove: yes
+        clean: yes
