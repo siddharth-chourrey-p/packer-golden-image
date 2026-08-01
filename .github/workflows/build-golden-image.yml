@@ -3,7 +3,7 @@ name: Build golden image
 on:
   workflow_dispatch:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
       - packer-golden-image/**
 
@@ -22,6 +22,14 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
     steps:
+      # 1. OIDC Login to Azure (Zero Secrets)
+      - name: Azure Login via OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -41,13 +49,6 @@ jobs:
         with:
           version: "latest"
 
-      # 4. OIDC Login to Azure (Zero Secrets)
-      - name: Azure Login via OIDC
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.ARM_CLIENT_ID }}
-          tenant-id: ${{ secrets.ARM_TENANT_ID }}
-          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         
       # 5. Packer Plugins Initialize
       - name: Packer Init
