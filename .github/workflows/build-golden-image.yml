@@ -53,14 +53,11 @@ jobs:
       # 5. Packer Plugins Initialize
       - name: Packer Init
         run: packer init ubuntu-golden-image.pkr.hcl
-        working-directory: ./packer-golden-image
 
         # 6. Packer Syntax Validation
       - name: Packer Validate
         run: packer validate ubuntu-golden-image.pkr.hcl
-        working-directory: ./packer-golden-image
 
         # 7. Execute Packer Build (Banaega Golden Image Azure me)
       - name: Packer Build Image
         run: packer build ubuntu-golden-image.pkr.hcl
-        working-directory: ./packer-golden-image
